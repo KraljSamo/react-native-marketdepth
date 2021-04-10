@@ -10,21 +10,23 @@ function History({ navigation }) {
   return (
     <View style={{ flex: 1 }}>
       <Header navigation={navigation} />
-      {history.map((item) => {
-        let prettyTime = new Date(item.timestamp * 1000).toLocaleString("en-US");
-        return (
-          <View style={{ flexDirection: "row", flex: 1 }} key={item.timestamp}>
-            <View style={{ flex: 1 }}>
-              <Text>{prettyTime}</Text>
+      <View style={{ flex: 1 }}>
+        {history.map((item, index) => {
+          let prettyTime = new Date(item.timestamp * 1000).toLocaleString("sl-SI");
+          return (
+            <View style={{ flexDirection: "row", flex: 1 }} key={item.timestamp}>
+              <View style={{ flex: 1 }}>
+                <Text>{prettyTime}</Text>
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text>
+                  {item.price} {currentTicker === "BTCEUR" ? "€" : "$"}
+                </Text>
+              </View>
             </View>
-            <View style={{ flex: 1 }}>
-              <Text>
-                {item.price} {currentTicker === "BTCEUR" ? "€" : "$"}
-              </Text>
-            </View>
-          </View>
-        );
-      })}
+          );
+        })}
+      </View>
     </View>
   );
 }
