@@ -6,9 +6,6 @@ function LiveFeedScreen({ navigation }) {
   return (
     <View>
       <Header navigation={navigation} />
-      <View style={styles.container}>
-        <Text>Home Screen</Text>
-      </View>
     </View>
   );
 }
@@ -19,6 +16,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+    width: "100%",
   },
 });
 

@@ -6,7 +6,6 @@ function History({ navigation }) {
   return (
     <View>
       <Header navigation={navigation} />
-      <Text>Historical prices </Text>
     </View>
   );
 }
