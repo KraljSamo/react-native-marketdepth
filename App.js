@@ -8,12 +8,11 @@ import History from "./app/screens/History";
 
 import { Provider } from "react-redux";
 import { createStore } from "redux";
-import PairReducer from "./app/PairReducer";
-import PairActions from "./app/PairActions";
+import Reducer from "./app/reducers";
 
 const Stack = createStackNavigator();
 
-const store = createStore(PairReducer);
+const store = createStore(Reducer);
 
 export default function App() {
   return (

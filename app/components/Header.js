@@ -4,7 +4,7 @@ import { Picker } from "@react-native-community/picker";
 import { useDispatch, useSelector } from "react-redux";
 
 function Header(props) {
-  const currentPair = useSelector((state) => state.pair.selectedPair);
+  const currentTicker = useSelector((state) => state.data.selectedTicker);
   const dispatch = useDispatch();
 
   return (
@@ -18,7 +18,7 @@ function Header(props) {
       <Button style={styles.button} title={"See history"} onPress={() => props.navigation.navigate("History")} />
       <Picker
         style={{ flex: 1 }}
-        selectedValue={currentPair}
+        selectedValue={currentTicker}
         onValueChange={(itemValue) => dispatch({ type: "CHANGE_PAIR", payload: itemValue })}
       >
         <Picker.Item label="BTC/EUR" value="BTCEUR" />
