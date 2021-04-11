@@ -37,6 +37,10 @@ const appReducer = (state = initialState, action) => {
         price: action.payload.price,
       });
 
+      // Limit history size to max 5 records
+      const currentSize = updatedObject.history.length;
+      if (currentSize > 50) updatedObject.history = updatedObject.history.slice(currentSize - 50, currentSize);
+
       if (state.showLive) {
         updatedObject.index = updatedObject.history.length - 1;
       }
