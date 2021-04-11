@@ -3,13 +3,14 @@ import { View, Text, StyleSheet, TouchableHighlight } from "react-native";
 import Header from "../components/Header";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
+import DepthChart from "../components/DepthChart";
 
 function LiveFeedScreen({ navigation }) {
   const dispatch = useDispatch();
   const currentTicker = useSelector((state) => state.data.selectedTicker);
   const showLive = useSelector((state) => state.data.showLive);
-  const [requestCounter, setRequestCounter] = useState(0);
   const dataFeed = useSelector((state) => state.data.priceData.filter((item) => item.ticker == currentTicker))[0];
+  const [requestCounter, setRequestCounter] = useState(0);
 
   let selectedSnapshot;
   if (dataFeed.index === -1) {
@@ -51,7 +52,7 @@ function LiveFeedScreen({ navigation }) {
       };
       dispatch({ type: "ADD_SNAPSHOT", payload: actionPayload });
     } catch (e) {
-      console.log(e);
+      console.log("Request failed ...");
     }
   }
 
@@ -68,16 +69,26 @@ function LiveFeedScreen({ navigation }) {
     <View style={{ flex: 1 }}>
       <Header navigation={navigation} />
       <View style={{ alignItems: "center", fontSize: 30 }}>
-        <Text style={{ fontSize: 30 }}>Order book chart</Text>
-        <Text> Bids:</Text>
-        {selectedSnapshot?.bids.slice(0, 10).map((item, index) => (
-          <Text key={index}>{`${item[0]} - ${item[1]}`}</Text>
-        ))}
-        <Text> Asks:</Text>
-        {selectedSnapshot?.asks.slice(0, 10).map((item, index) => (
-          <Text key={index}>{`${item[0]} - ${item[1]}`}</Text>
-        ))}
+        <Text style={{ fontSize: 30 }}>Market depth chart </Text>
+        {selectedSnapshot && (
+          <DepthChart asks={selectedSnapshot.asks.slice(0, 50)} bids={selectedSnapshot.bids.slice(0, 50)} />
+        )}
+        <View style={{ flexDirection: "row" }}>
+          <View style={{ flex: 1 }}>
+            <Text> Bids:</Text>
+            {selectedSnapshot?.bids.slice(0, 5).map((item, index) => (
+              <Text key={index}>{`${item[0]} - ${item[1]}`}</Text>
+            ))}
+          </View>
+          <View style={{ flex: 1 }}>
+            <Text> Asks:</Text>
+            {selectedSnapshot?.asks.slice(0, 5).map((item, index) => (
+              <Text key={index}>{`${item[0]} - ${item[1]}`}</Text>
+            ))}
+          </View>
+        </View>
       </View>
+
       <View style={{ flex: 1, justifyContent: "flex-end" }}>
         {!showLive ? (
           <View style={{ flexDirection: "row" }}>
@@ -87,16 +98,19 @@ function LiveFeedScreen({ navigation }) {
         ) : (
           <></>
         )}
+
         <View style={{ flexDirection: "row" }}>
           <Text style={{ flex: 2, fontSize: 20 }}>Time:</Text>
           <Text style={{ flex: 3, fontSize: 20 }}>
             {selectedSnapshot ? getPrettyTime(selectedSnapshot.timestamp) : "Fetching data ... "}
           </Text>
         </View>
+
         <View style={{ flexDirection: "row", justifyContent: "center" }}>
           <Text style={{ flex: 2, fontSize: 20 }}>{currentTicker}</Text>
           <Text style={{ flex: 3, fontSize: 20 }}>{selectedSnapshot?.price}</Text>
         </View>
+
         <View style={{ flexDirection: "row", height: 30 }}>
           <View style={[{ backgroundColor: "#ffcec4" }, styles.bottomButtonContainer]}>
             <TouchableHighlight
