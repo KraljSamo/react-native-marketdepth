@@ -1,6 +1,6 @@
 import React from "react";
-import { View, Dimensions } from "react-native";
-import { BarChart, LineChart } from "react-native-chart-kit";
+import { Dimensions } from "react-native";
+import { LineChart } from "react-native-chart-kit";
 
 function makeCumulativeArray(array) {
   // Transforms an array of numbers into an array of cumulative sums

@@ -4,7 +4,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 import React from "react";
 import LiveFeedScreen from "./app/screens/LiveFeedScreen";
-import History from "./app/screens/History";
+import History from "./app/screens/HistoryScreen";
 
 import { Provider } from "react-redux";
 import { createStore } from "redux";

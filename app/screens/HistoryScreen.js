@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, FlatList, TouchableHighlight } from "react-native";
+import { View, Text, FlatList, TouchableHighlight } from "react-native";
 import Header from "../components/Header";
 import { useSelector, useDispatch } from "react-redux";
 

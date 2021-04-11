@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { View, Text, Button, StyleSheet } from "react-native";
+import React from "react";
+import { View, Button, StyleSheet } from "react-native";
 import { Picker } from "@react-native-community/picker";
 import { useDispatch, useSelector } from "react-redux";
 
