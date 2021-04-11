@@ -28,8 +28,8 @@ function HistoryRow({ item, handleRowPress }) {
 }
 
 function History({ navigation }) {
-  const currentTicker = useSelector((state) => state.data.selectedTicker);
-  const dataFeed = useSelector((state) => state.data.priceData.filter((item) => item.ticker === currentTicker))[0];
+  const currentTicker = useSelector((state) => state.selectedTicker);
+  const dataFeed = useSelector((state) => state.priceData.filter((item) => item.ticker === currentTicker))[0];
   const dispatch = useDispatch();
 
   function handleRowPress(index) {

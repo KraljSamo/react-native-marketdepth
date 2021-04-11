@@ -4,7 +4,7 @@ import { Picker } from "@react-native-community/picker";
 import { useDispatch, useSelector } from "react-redux";
 
 function Header(props) {
-  const currentTicker = useSelector((state) => state.data.selectedTicker);
+  const currentTicker = useSelector((state) => state.selectedTicker);
   const dispatch = useDispatch();
 
   return (

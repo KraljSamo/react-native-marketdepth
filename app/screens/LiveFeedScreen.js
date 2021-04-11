@@ -16,9 +16,9 @@ function TextRow(props) {
 
 function LiveFeedScreen({ navigation }) {
   const dispatch = useDispatch();
-  const currentTicker = useSelector((state) => state.data.selectedTicker);
-  const showLive = useSelector((state) => state.data.showLive);
-  const dataFeed = useSelector((state) => state.data.priceData.filter((item) => item.ticker == currentTicker))[0];
+  const currentTicker = useSelector((state) => state.selectedTicker);
+  const showLive = useSelector((state) => state.showLive);
+  const dataFeed = useSelector((state) => state.priceData.filter((item) => item.ticker == currentTicker))[0];
   const [requestCounter, setRequestCounter] = useState(0);
 
   let selectedSnapshot;
@@ -68,7 +68,7 @@ function LiveFeedScreen({ navigation }) {
   useEffect(() => {
     try {
       getPrice();
-      setTimeout(() => setRequestCounter(requestCounter + 1), 5000);
+      setTimeout(() => setRequestCounter(requestCounter + 1), 10000);
     } catch (e) {
       setRequestCounter(requestCounter + 1);
     }

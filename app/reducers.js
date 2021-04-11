@@ -70,4 +70,4 @@ const appReducer = (state = initialState, action) => {
   }
 };
 
-export default combineReducers({ data: appReducer });
+export default appReducer;
