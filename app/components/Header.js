@@ -9,13 +9,8 @@ function Header(props) {
 
   return (
     <View style={styles.container}>
-      <Button
-        style={styles.button}
-        title={"To live feed"}
-        onPress={() => props.navigation.navigate("LiveFeed")}
-        color={"green"}
-      />
-      <Button style={styles.button} title={"See history"} onPress={() => props.navigation.navigate("History")} />
+      <Button title={"To live feed"} onPress={() => props.navigation.navigate("LiveFeed")} color={"#7ee30b"} />
+      <Button title={"See history"} onPress={() => props.navigation.navigate("History")} color={"#6d96ed"} />
       <Picker
         style={{ flex: 1 }}
         selectedValue={currentTicker}
@@ -33,6 +28,7 @@ export default Header;
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
+    alignItems: "center",
   },
   button: {},
 });

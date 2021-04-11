@@ -1,31 +1,40 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, FlatList, TouchableHighlight } from "react-native";
 import Header from "../components/Header";
 import { useSelector } from "react-redux";
 
+function getPrettyTime(timestamp) {
+  return new Date(timestamp * 1000).toLocaleString("sl-SI");
+}
+
+function HistoryRow({ item }) {
+  return (
+    <View style={{ flexDirection: "row", height: 30, alignItems: "center" }}>
+      <View style={{ flex: 3 }}>
+        <Text>{getPrettyTime(item.timestamp)}</Text>
+      </View>
+      <View style={{ flex: 2 }}>
+        <Text>{item.price}</Text>
+      </View>
+      <TouchableHighlight style={{ flex: 1 }} onPress={() => console.log(item.timestamp)}>
+        <Text>OB </Text>
+      </TouchableHighlight>
+    </View>
+  );
+}
+
 function History({ navigation }) {
   const currentTicker = useSelector((state) => state.data.selectedTicker);
-  const history = useSelector((state) => state.data.priceData.filter((item) => item.ticker === currentTicker))[0]
-    .history;
+  const dataFeed = useSelector((state) => state.data.priceData.filter((item) => item.ticker === currentTicker))[0];
+
   return (
     <View style={{ flex: 1 }}>
       <Header navigation={navigation} />
-      <View style={{ flex: 1 }}>
-        {history.map((item, index) => {
-          let prettyTime = new Date(item.timestamp * 1000).toLocaleString("sl-SI");
-          return (
-            <View style={{ flexDirection: "row", flex: 1 }} key={item.timestamp}>
-              <View style={{ flex: 1 }}>
-                <Text>{prettyTime}</Text>
-              </View>
-              <View style={{ flex: 1 }}>
-                <Text>
-                  {item.price} {currentTicker === "BTCEUR" ? "€" : "$"}
-                </Text>
-              </View>
-            </View>
-          );
-        })}
+      <View>
+        <FlatList
+          data={dataFeed.history.map((item, index) => ({ ...item, key: index.toString() }))}
+          renderItem={({ item }) => <HistoryRow key={item.key} item={item} />}
+        />
       </View>
     </View>
   );
