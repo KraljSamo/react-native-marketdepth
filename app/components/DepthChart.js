@@ -16,8 +16,6 @@ function DepthChart({ asks, bids }) {
   };
   const screenWidth = Dimensions.get("window").width;
 
-  const cumulativeSum = ((sum) => (value) => (sum += value))[0];
-
   const bidsCumulative = makeCumulativeArray(bids.map((item) => parseFloat(item[1])).reverse()).reverse();
   const asksCumulative = makeCumulativeArray(asks.map((item) => parseFloat(item[1])));
 
@@ -25,7 +23,7 @@ function DepthChart({ asks, bids }) {
     .map((item) => item[0])
     .reverse()
     .concat(asks.map((item) => item[0]));
-  const hideLabelsIndices = [...Array(chartLabels.length).keys()].filter((item) => item % 7 !== 0);
+  const hideLabelsIndices = [...Array(chartLabels.length).keys()].filter((item) => item % 11 !== 0);
 
   const bidsLine = bidsCumulative.concat(asks.map((item) => 0));
   // const bidsLine = bids.map((item) => item[1]).concat(asks.map((item) => 0));
@@ -50,10 +48,10 @@ function DepthChart({ asks, bids }) {
     <LineChart
       data={data}
       width={screenWidth}
-      height={400}
+      height={300}
       yAxisLabel="BTC "
       chartConfig={chartConfig}
-      verticalLabelRotation={90}
+      verticalLabelRotation={45}
       withInnerLines={false}
       hidePointsAtIndex={hideLabelsIndices}
     />

@@ -54,10 +54,12 @@ const appReducer = (state = initialState, action) => {
       newState.priceData
         .filter((item) => item.ticker === state.selectedTicker)
         .map((item) => {
-          if (action.payload == 1 && item.index < item.history.length - 1) {
-            item.index += 1;
-          } else if (action.payload == -1 && item.index > 0) {
-            item.index -= 1;
+          item.index = action.payload;
+          if (item.index >= item.history.length) {
+            item.index = item.history.length - 1;
+          }
+          if (item.index < 0) {
+            item.index = 0;
           }
           return item;
         });

@@ -24,11 +24,11 @@ function LiveFeedScreen({ navigation }) {
   }
 
   function previousSnapshot() {
-    dispatch({ type: "CHANGE_SNAPSHOT", payload: -1 });
+    dispatch({ type: "CHANGE_SNAPSHOT", payload: dataFeed.index - 1 });
   }
 
   function nextSnapshot() {
-    dispatch({ type: "CHANGE_SNAPSHOT", payload: 1 });
+    dispatch({ type: "CHANGE_SNAPSHOT", payload: dataFeed.index + 1 });
   }
 
   function toggleLive() {
@@ -66,14 +66,14 @@ function LiveFeedScreen({ navigation }) {
   }, [requestCounter, currentTicker]);
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, margin: 10 }}>
       <Header navigation={navigation} />
       <View style={{ alignItems: "center", fontSize: 30 }}>
         <Text style={{ fontSize: 30 }}>Market depth chart </Text>
         {selectedSnapshot && (
-          <DepthChart asks={selectedSnapshot.asks.slice(0, 50)} bids={selectedSnapshot.bids.slice(0, 50)} />
+          <DepthChart asks={selectedSnapshot.asks.slice(0, 100)} bids={selectedSnapshot.bids.slice(0, 100)} />
         )}
-        <View style={{ flexDirection: "row" }}>
+        <View style={{ flexDirection: "row", flexShrink: 1 }}>
           <View style={{ flex: 1 }}>
             <Text> Bids:</Text>
             {selectedSnapshot?.bids.slice(0, 5).map((item, index) => (
@@ -92,23 +92,23 @@ function LiveFeedScreen({ navigation }) {
       <View style={{ flex: 1, justifyContent: "flex-end" }}>
         {!showLive ? (
           <View style={{ flexDirection: "row" }}>
-            <Text style={{ flex: 2, fontSize: 20 }}>Snapshot</Text>
-            <Text style={{ flex: 3, fontSize: 20 }}>{`${dataFeed.index + 1}/${dataFeed.history.length}`}</Text>
+            <Text style={{ flex: 2, fontSize: 15 }}>Snapshot</Text>
+            <Text style={{ flex: 3, fontSize: 15 }}>{`${dataFeed.index + 1}/${dataFeed.history.length}`}</Text>
           </View>
         ) : (
           <></>
         )}
 
         <View style={{ flexDirection: "row" }}>
-          <Text style={{ flex: 2, fontSize: 20 }}>Time:</Text>
-          <Text style={{ flex: 3, fontSize: 20 }}>
+          <Text style={{ flex: 2, fontSize: 15 }}>Time:</Text>
+          <Text style={{ flex: 3, fontSize: 15 }}>
             {selectedSnapshot ? getPrettyTime(selectedSnapshot.timestamp) : "Fetching data ... "}
           </Text>
         </View>
 
         <View style={{ flexDirection: "row", justifyContent: "center" }}>
-          <Text style={{ flex: 2, fontSize: 20 }}>{currentTicker}</Text>
-          <Text style={{ flex: 3, fontSize: 20 }}>{selectedSnapshot?.price}</Text>
+          <Text style={{ flex: 2, fontSize: 15 }}>{currentTicker}</Text>
+          <Text style={{ flex: 3, fontSize: 15 }}>{selectedSnapshot?.price}</Text>
         </View>
 
         <View style={{ flexDirection: "row", height: 30 }}>
