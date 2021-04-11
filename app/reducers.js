@@ -21,7 +21,7 @@ const appReducer = (state = initialState, action) => {
   let newState = { ...state };
   switch (action.type) {
     case "CHANGE_PAIR":
-      return { ...state, selectedTicker: action.payload };
+      return { ...state, selectedTicker: action.payload, showLive: true };
     case "TOGGLE_LIVE":
       return { ...state, showLive: action.payload };
     case "ADD_SNAPSHOT":
@@ -35,9 +35,11 @@ const appReducer = (state = initialState, action) => {
       updatedObject.history.push({
         timestamp: action.payload.timestamp,
         price: action.payload.price,
+        asks: action.payload.asks,
+        bids: action.payload.bids,
       });
 
-      // Limit history size to max 5 records
+      // Limit history size to max 50 records
       const currentSize = updatedObject.history.length;
       if (currentSize > 50) updatedObject.history = updatedObject.history.slice(currentSize - 50, currentSize);
 

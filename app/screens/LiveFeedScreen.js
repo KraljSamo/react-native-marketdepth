@@ -32,6 +32,7 @@ function LiveFeedScreen({ navigation }) {
 
   function toggleLive() {
     dispatch({ type: "TOGGLE_LIVE", payload: !showLive });
+    setRequestCounter(requestCounter + 1);
   }
 
   async function getPrice() {
@@ -40,10 +41,13 @@ function LiveFeedScreen({ navigation }) {
     }
     try {
       const response = await axios.get(`https://www.bitstamp.net/api/v2/ticker/${currentTicker}/`);
+      const responseOrderBook = await axios.get(`https://www.bitstamp.net/api/v2/order_book/${currentTicker}/`);
       const actionPayload = {
         ticker: currentTicker,
         timestamp: response.data.timestamp,
         price: response.data.last,
+        bids: responseOrderBook.data.bids,
+        asks: responseOrderBook.data.asks,
       };
       dispatch({ type: "ADD_SNAPSHOT", payload: actionPayload });
     } catch (e) {
@@ -65,8 +69,24 @@ function LiveFeedScreen({ navigation }) {
       <Header navigation={navigation} />
       <View style={{ alignItems: "center", fontSize: 30 }}>
         <Text style={{ fontSize: 30 }}>Order book chart</Text>
+        <Text> Bids:</Text>
+        {selectedSnapshot?.bids.slice(0, 10).map((item, index) => (
+          <Text key={index}>{`${item[0]} - ${item[1]}`}</Text>
+        ))}
+        <Text> Asks:</Text>
+        {selectedSnapshot?.asks.slice(0, 10).map((item, index) => (
+          <Text key={index}>{`${item[0]} - ${item[1]}`}</Text>
+        ))}
       </View>
       <View style={{ flex: 1, justifyContent: "flex-end" }}>
+        {!showLive ? (
+          <View style={{ flexDirection: "row" }}>
+            <Text style={{ flex: 2, fontSize: 20 }}>Snapshot</Text>
+            <Text style={{ flex: 3, fontSize: 20 }}>{`${dataFeed.index + 1}/${dataFeed.history.length}`}</Text>
+          </View>
+        ) : (
+          <></>
+        )}
         <View style={{ flexDirection: "row" }}>
           <Text style={{ flex: 2, fontSize: 20 }}>Time:</Text>
           <Text style={{ flex: 3, fontSize: 20 }}>
@@ -79,17 +99,25 @@ function LiveFeedScreen({ navigation }) {
         </View>
         <View style={{ flexDirection: "row", height: 30 }}>
           <View style={[{ backgroundColor: "#ffcec4" }, styles.bottomButtonContainer]}>
-            <TouchableHighlight onPress={() => previousSnapshot()} style={styles.bottomButton}>
+            <TouchableHighlight
+              onPress={() => previousSnapshot()}
+              style={styles.bottomButton}
+              underlayColor={"#f5a190"}
+            >
               <Text> Prev </Text>
             </TouchableHighlight>
           </View>
           <View style={[{ backgroundColor: showLive ? "#f7d699" : "#b2f57f", flex: 1 }, styles.bottomButtonContainer]}>
-            <TouchableHighlight onPress={() => toggleLive()} style={styles.bottomButton}>
+            <TouchableHighlight
+              onPress={() => toggleLive()}
+              style={styles.bottomButton}
+              underlayColor={showLive ? "#f2c46f" : "#a0f55f"}
+            >
               <Text> {showLive ? "Pause" : "Go live"} </Text>
             </TouchableHighlight>
           </View>
           <View style={[{ backgroundColor: "#8dadf2", flex: 1 }, styles.bottomButtonContainer]}>
-            <TouchableHighlight onPress={() => nextSnapshot()} style={styles.bottomButton}>
+            <TouchableHighlight onPress={() => nextSnapshot()} style={styles.bottomButton} underlayColor={"#719af5"}>
               <Text> Next </Text>
             </TouchableHighlight>
           </View>
