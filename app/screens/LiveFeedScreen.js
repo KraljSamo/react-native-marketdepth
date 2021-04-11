@@ -50,12 +50,14 @@ function LiveFeedScreen({ navigation }) {
       return;
     }
     try {
-      const response = await axios.get(`https://www.bitstamp.net/api/v2/ticker/${currentTicker}/`);
       const responseOrderBook = await axios.get(`https://www.bitstamp.net/api/v2/order_book/${currentTicker}/`);
       const actionPayload = {
         ticker: currentTicker,
-        timestamp: response.data.timestamp,
-        price: response.data.last,
+        timestamp: responseOrderBook.data.timestamp,
+        price: (
+          (parseFloat(responseOrderBook.data.bids[0][0]) + parseFloat(responseOrderBook.data.asks[0][0])) /
+          2
+        ).toFixed(2),
         bids: responseOrderBook.data.bids,
         asks: responseOrderBook.data.asks,
       };
