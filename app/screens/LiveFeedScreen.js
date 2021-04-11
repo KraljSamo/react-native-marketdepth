@@ -5,6 +5,15 @@ import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import DepthChart from "../components/DepthChart";
 
+function TextRow(props) {
+  return (
+    <View style={{ flexDirection: "row" }}>
+      <Text style={{ flex: 2, fontSize: 15 }}>{props.left}</Text>
+      <Text style={{ flex: 3, fontSize: 15 }}>{props.right}</Text>
+    </View>
+  );
+}
+
 function LiveFeedScreen({ navigation }) {
   const dispatch = useDispatch();
   const currentTicker = useSelector((state) => state.data.selectedTicker);
@@ -90,26 +99,12 @@ function LiveFeedScreen({ navigation }) {
       </View>
 
       <View style={{ flex: 1, justifyContent: "flex-end" }}>
-        {!showLive ? (
-          <View style={{ flexDirection: "row" }}>
-            <Text style={{ flex: 2, fontSize: 15 }}>Snapshot</Text>
-            <Text style={{ flex: 3, fontSize: 15 }}>{`${dataFeed.index + 1}/${dataFeed.history.length}`}</Text>
-          </View>
-        ) : (
-          <></>
-        )}
-
-        <View style={{ flexDirection: "row" }}>
-          <Text style={{ flex: 2, fontSize: 15 }}>Time:</Text>
-          <Text style={{ flex: 3, fontSize: 15 }}>
-            {selectedSnapshot ? getPrettyTime(selectedSnapshot.timestamp) : "Fetching data ... "}
-          </Text>
-        </View>
-
-        <View style={{ flexDirection: "row", justifyContent: "center" }}>
-          <Text style={{ flex: 2, fontSize: 15 }}>{currentTicker}</Text>
-          <Text style={{ flex: 3, fontSize: 15 }}>{selectedSnapshot?.price}</Text>
-        </View>
+        {!showLive ? <TextRow left={"Snapshot"} right={`${dataFeed.index + 1}/${dataFeed.history.length}`} /> : <></>}
+        <TextRow
+          left={"Time"}
+          right={selectedSnapshot ? getPrettyTime(selectedSnapshot.timestamp) : "Fetching data ... "}
+        />
+        <TextRow left={currentTicker} right={selectedSnapshot?.price} />
 
         <View style={{ flexDirection: "row", height: 30 }}>
           <View style={[{ backgroundColor: "#ffcec4" }, styles.bottomButtonContainer]}>
@@ -121,7 +116,7 @@ function LiveFeedScreen({ navigation }) {
               <Text> Prev </Text>
             </TouchableHighlight>
           </View>
-          <View style={[{ backgroundColor: showLive ? "#f7d699" : "#b2f57f", flex: 1 }, styles.bottomButtonContainer]}>
+          <View style={[{ backgroundColor: showLive ? "#f7d699" : "#b2f57f" }, styles.bottomButtonContainer]}>
             <TouchableHighlight
               onPress={() => toggleLive()}
               style={styles.bottomButton}
@@ -130,7 +125,7 @@ function LiveFeedScreen({ navigation }) {
               <Text> {showLive ? "Pause" : "Go live"} </Text>
             </TouchableHighlight>
           </View>
-          <View style={[{ backgroundColor: "#8dadf2", flex: 1 }, styles.bottomButtonContainer]}>
+          <View style={[{ backgroundColor: "#8dadf2" }, styles.bottomButtonContainer]}>
             <TouchableHighlight onPress={() => nextSnapshot()} style={styles.bottomButton} underlayColor={"#719af5"}>
               <Text> Next </Text>
             </TouchableHighlight>
